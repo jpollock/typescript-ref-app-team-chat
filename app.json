@@ -1,0 +1,7 @@
+{
+  "name": "PubNub Chat",
+  "description": "Reference app for chat",
+  "repository": "https://github.com/jpollock/typescript-ref-app-team-chat.git",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "chat", "pubnub"]
+}

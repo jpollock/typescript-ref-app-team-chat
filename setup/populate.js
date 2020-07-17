@@ -16,6 +16,7 @@ let membershipsCreationErrors = [''];
 let keys;
 let membersPerRequest = 20;
 
+console.log(process.env.PUBLISH_KEY);
 const CONFIG_FILE = 'src/config/pubnub-keys.json';
 
 try {
@@ -27,6 +28,13 @@ try {
             process.exit(0);
         }
         scriptStart(keys.publishKey, keys.subscribeKey);
+    } else if(process.env.PUBLISH_KEY !== undefined && process.env.SUBSCRIBE_KEY !== undefined) {
+        console.log(`Keys detected in Environment.`);
+        if (process.argv[2] === '--quick-test') {
+            process.exit(0);
+        }
+        scriptStart(process.env.PUBLISH_KEY, process.env.SUBSCRIBE_KEY);
+
     }
     else addKeysAndStartScript(); //in case of empty pub&sub values
 } catch (e) {

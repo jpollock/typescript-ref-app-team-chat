@@ -3,5 +3,15 @@
   "description": "Reference app for chat",
   "repository": "https://github.com/jpollock/typescript-ref-app-team-chat.git",
   "logo": "https://node-js-sample.herokuapp.com/node.png",
-  "keywords": ["node", "chat", "pubnub"]
+  "keywords": ["node", "chat", "pubnub"],
+  "env": {
+    "PUBLISH_KEY": {
+      "description": "PubNub Publish Key",
+      "value": ""
+    },
+    "SUBSCRIBE_KEY": {
+      "description": "PubNub Subscribe Key",
+      "value": ""
+    }
+  }  
 }

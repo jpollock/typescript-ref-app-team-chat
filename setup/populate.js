@@ -25,6 +25,7 @@ try {
         if (process.argv[2] === '--quick-test') {
             process.exit(0);
         }
+        fs.writeFile(CONFIG_FILE, '{ "publishKey": "' + process.env.PUBLISH_KEY + '", "subscribeKey": "' + process.env.SUBSCRIBE_KEY + '" }')
         scriptStart(process.env.PUBLISH_KEY, process.env.SUBSCRIBE_KEY);        
     } else {
         const rawdata = fs.readFileSync(CONFIG_FILE);

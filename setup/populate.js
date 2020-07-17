@@ -20,25 +20,25 @@ let membersPerRequest = 20;
 const CONFIG_FILE = 'src/config/pubnub-keys.json';
 
 try {
-    const rawdata = fs.readFileSync(CONFIG_FILE);
-    keys = JSON.parse(rawdata);
-    if(keys && keys.publishKey.length && keys.subscribeKey.length) {
-        console.log(`Keys detected in ${CONFIG_FILE}.`);
-        if (process.argv[2] === '--quick-test') {
-            process.exit(0);
-        }
-        scriptStart(keys.publishKey, keys.subscribeKey);
-    } else addKeysAndStartScript(); //in case of empty pub&sub values
-} catch (e) {
     if(process.env.PUBLISH_KEY !== undefined && process.env.SUBSCRIBE_KEY !== undefined) {
         console.log(`Keys detected in Environment.`);
         if (process.argv[2] === '--quick-test') {
             process.exit(0);
         }
-        scriptStart(process.env.PUBLISH_KEY, process.env.SUBSCRIBE_KEY);
-
+        scriptStart(process.env.PUBLISH_KEY, process.env.SUBSCRIBE_KEY);        
+    } else {
+        const rawdata = fs.readFileSync(CONFIG_FILE);
+        keys = JSON.parse(rawdata);
+        if(keys && keys.publishKey.length && keys.subscribeKey.length) {
+            console.log(`Keys detected in ${CONFIG_FILE}.`);
+            if (process.argv[2] === '--quick-test') {
+                process.exit(0);
+            }
+            scriptStart(keys.publishKey, keys.subscribeKey);
+        } else addKeysAndStartScript(); //in case of empty pub&sub values    
     }
-    else addKeysAndStartScript(); //in case of empty pub&sub values
+} catch (e) {
+    addKeysAndStartScript(); //in case of empty pub&sub values
 }
 
 function addKeysAndStartScript() {

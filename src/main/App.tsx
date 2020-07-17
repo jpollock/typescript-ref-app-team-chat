@@ -12,12 +12,19 @@ import keyConfiguration from "config/pubnub-keys.json";
 import { ThemeProvider } from "styled-components";
 import { createTypingIndicatorsListener } from "features/typingIndicator/typingIndicatorModel";
 
+if (
+  process.env.PUBLISH_KEY !== undefined &&
+  process.env.SUBSCRIBE_KEY !== undefined
+) {
+  keyConfiguration.publishKey = process.env.PUBLISH_KEY;
+  keyConfiguration.subscribeKey = process.env.SUBSCRIBE_KEY;
+}
 const pubnubConfig = Object.assign(
   {},
   {
     // Ensure that subscriptions will be retained if the network connection is lost
     restore: true,
-    heartbeatInterval: 0
+    heartbeatInterval: 0,
   },
   keyConfiguration
 );
@@ -25,8 +32,8 @@ const pubnub = new Pubnub(pubnubConfig);
 
 const store = createAppStore({
   pubnub: {
-    api: pubnub
-  }
+    api: pubnub,
+  },
 });
 
 const leaveApplication = () => {

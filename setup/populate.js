@@ -1,6 +1,6 @@
 const PubNub = require('pubnub');
 const data = require('./team-chat-initialization-data.json'); 
-const _cliProgress = require('cli-progress');
+//const _cliProgress = require('cli-progress');
 const readline = require("readline");
 const fs = require('file-system');
 const rl = readline.createInterface({
@@ -74,17 +74,17 @@ async function scriptStart (publishKey, subscribeKey) {
     });     
     let numberOfUsers = data.users.length;
     let numberOfSpaces = data.spaces.length;
-    const usersCreatedBar = new _cliProgress.SingleBar({}, _cliProgress.Presets.shades_classic);
-    const spacesCreatedBar = new _cliProgress.SingleBar({}, _cliProgress.Presets.shades_classic);
-    const membershipsCreatedBar = new _cliProgress.SingleBar({}, _cliProgress.Presets.shades_classic);
+    //const usersCreatedBar = new _cliProgress.SingleBar({}, _cliProgress.Presets.shades_classic);
+    //const spacesCreatedBar = new _cliProgress.SingleBar({}, _cliProgress.Presets.shades_classic);
+    ////const membershipsCreatedBar = new _cliProgress.SingleBar({}, _cliProgress.Presets.shades_classic);
     console.log('\nCreating users:');
-    usersCreatedBar.start(numberOfUsers, 0);
+    //usersCreatedBar.start(numberOfUsers, 0);
 
     const createUsers = () => {
         data.users.forEach((item, index) => {
             createdUsers.push(new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    usersCreatedBar.increment();
+                    //usersCreatedBar.increment();
                     pubnub.createUser({
                         id: item.id,
                         name: item.name,
@@ -122,11 +122,11 @@ async function scriptStart (publishKey, subscribeKey) {
 
     const createSpaces = () => {
         console.log('\nCreating spaces:');
-        spacesCreatedBar.start(numberOfSpaces, 0);
+        //spacesCreatedBar.start(numberOfSpaces, 0);
         data.spaces.forEach((item, index) => {
             createdSpaces.push(new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    spacesCreatedBar.increment()
+                    //spacesCreatedBar.increment()
                     pubnub.createSpace({
                         id: item.id,
                         name: item.name,
@@ -152,11 +152,11 @@ async function scriptStart (publishKey, subscribeKey) {
 
     const createMemberships = () => {
         console.log('\nCreating memberships:');
-        membershipsCreatedBar.start(numberOfSpaces, 0);
+        //membershipsCreatedBar.start(numberOfSpaces, 0);
         data.members.forEach((item, index) => {
             createdMemberships.push(new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    membershipsCreatedBar.increment();
+                    //membershipsCreatedBar.increment();
                     if(data.members[index].members.length > membersPerRequest) {
                         let leftMembersToAdd = data.members[index].members.length;
                         let devideMembersArray = [];

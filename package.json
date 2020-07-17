@@ -68,7 +68,7 @@
     "styledComponents": {}
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": "v12.x.x"
   },
   "devDependencies": {
     "@giphy/js-types": "^2.0.2",

@@ -18,26 +18,22 @@ let membersPerRequest = 20;
 
 
 const CONFIG_FILE = 'src/config/pubnub-keys.json';
-
+if(process.env.PUBLISH_KEY !== undefined && process.env.SUBSCRIBE_KEY !== undefined) {
+    console.log(`Keys detected in Environment.`);
+    fs.writeFileSync(CONFIG_FILE, '{ "publishKey": "' + process.env.PUBLISH_KEY + '", "subscribeKey": "' + process.env.SUBSCRIBE_KEY + '" }')
+}
 try {
-    if(process.env.PUBLISH_KEY !== undefined && process.env.SUBSCRIBE_KEY !== undefined) {
-        console.log(`Keys detected in Environment.`);
+ 
+    const rawdata = fs.readFileSync(CONFIG_FILE);
+    keys = JSON.parse(rawdata);
+    if(keys && keys.publishKey.length && keys.subscribeKey.length) {
+        console.log(`Keys detected in ${CONFIG_FILE}.`);
         if (process.argv[2] === '--quick-test') {
             process.exit(0);
         }
-        fs.writeFile(CONFIG_FILE, '{ "publishKey": "' + process.env.PUBLISH_KEY + '", "subscribeKey": "' + process.env.SUBSCRIBE_KEY + '" }')
-        scriptStart(process.env.PUBLISH_KEY, process.env.SUBSCRIBE_KEY);        
-    } else {
-        const rawdata = fs.readFileSync(CONFIG_FILE);
-        keys = JSON.parse(rawdata);
-        if(keys && keys.publishKey.length && keys.subscribeKey.length) {
-            console.log(`Keys detected in ${CONFIG_FILE}.`);
-            if (process.argv[2] === '--quick-test') {
-                process.exit(0);
-            }
-            scriptStart(keys.publishKey, keys.subscribeKey);
-        } else addKeysAndStartScript(); //in case of empty pub&sub values    
-    }
+        scriptStart(keys.publishKey, keys.subscribeKey);
+    } else addKeysAndStartScript(); //in case of empty pub&sub values    
+
 } catch (e) {
     addKeysAndStartScript(); //in case of empty pub&sub values
 }

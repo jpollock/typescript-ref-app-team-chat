@@ -8,16 +8,19 @@ import { createPubNubListener } from "pubnub-redux";
 import { PubNubProvider } from "pubnub-react";
 import { Provider } from "react-redux";
 import { createAppStore } from "main/store";
-import keyConfiguration from "config/pubnub-keys.json";
+//import keyConfiguration from "config/pubnub-keys.json";
 import { ThemeProvider } from "styled-components";
 import { createTypingIndicatorsListener } from "features/typingIndicator/typingIndicatorModel";
 
+let keyConfiguration = { publishKey: "", subscribeKey: "" };
 if (
   process.env.PUBLISH_KEY !== undefined &&
   process.env.SUBSCRIBE_KEY !== undefined
 ) {
   keyConfiguration.publishKey = process.env.PUBLISH_KEY;
   keyConfiguration.subscribeKey = process.env.SUBSCRIBE_KEY;
+} else {
+  keyConfiguration = require("config/pubnub-keys.json");
 }
 const pubnubConfig = Object.assign(
   {},

@@ -1,22 +1,43 @@
-import React, { useRef } from "react";
-import { useSelector } from "react-redux";
-import { Breakpoint } from "features/layout/layoutModel";
-import { getPanelStates, getBreakpoint } from "features/layout/selectors";
-import { MyUserDetails } from "features/currentUser/MyUserDetails/MyUserDetails";
+import React, { useRef, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getViewStates } from "features/layout/Selectors";
 import { MyConversations } from "features/joinedConversations/MyConversations/MyConversations";
-import { Wrapper, AnimatedWrapper } from "./Menu.style";
+import {
+  Wrapper,
+  Controls,
+  CloseIcon,
+  getAnimatedWrapperVariants
+} from "./Menu.style";
+import { ThemeContext } from "styled-components";
+import { useMediaQuery } from "foundations/hooks/useMediaQuery";
+import { Branding } from "foundations/components/Branding";
+import { CrossIcon } from "foundations/components/icons/CrossIcon";
+import { menuViewHidden } from "features/layout/LayoutActions";
 
 const Menu = () => {
-  const panel = useRef<HTMLElement>(null);
-  const panels = useSelector(getPanelStates);
-  const breakpoint = useSelector(getBreakpoint);
-  const Panel = breakpoint === Breakpoint.Small ? Wrapper : AnimatedWrapper;
+  const view = useRef<HTMLElement>(null);
+  const views = useSelector(getViewStates);
+  const theme = useContext(ThemeContext);
+  const isMedium = useMediaQuery(theme.mediaQueries.medium);
+  const dispatch = useDispatch();
 
   return (
-    <Panel ref={panel} pose={panels.Left ? "open" : "closed"}>
-      <MyUserDetails />
+    <Wrapper
+      ref={view}
+      animate={views.Menu || isMedium ? "open" : "closed"}
+      variants={getAnimatedWrapperVariants(isMedium, theme.sizes[4])}
+    >
+      <Controls>
+        <CloseIcon onClick={() => dispatch(menuViewHidden())}>
+          <CrossIcon
+            color={theme.colors.onPrimary}
+            title="close conversations"
+          />
+        </CloseIcon>
+      </Controls>
+      <Branding></Branding>
       <MyConversations />
-    </Panel>
+    </Wrapper>
   );
 };
 

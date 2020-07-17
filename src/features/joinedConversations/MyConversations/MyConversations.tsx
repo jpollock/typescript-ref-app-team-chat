@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { getCurrentConversationId } from "features/currentConversation/currentConversationModel";
-import { setLayoutOverlay, setLayoutDefault } from "features/layout/actions";
 import { getConversationsByUserId } from "../joinedConversationModel";
 import { MembershipHash } from "../joinedConversationModel";
 import {
@@ -11,7 +10,7 @@ import {
 } from "features/conversations/conversationModel";
 import { focusOnConversation } from "features/currentConversation/currentConversationModel";
 import { getLoggedInUserId } from "features/authentication/authenticationModel";
-import { Add } from "foundations/components/icons/Add";
+import { AddIcon } from "foundations/components/icons/AddIcon";
 import { ConversationItem } from "../ConversationItem";
 import {
   Wrapper,
@@ -23,6 +22,11 @@ import { fetchSpaces, fetchMembers } from "pubnub-redux";
 import { getCurrentConversationMembers } from "features/conversationMembers/ConversationMembers/ConversationMembers";
 import { UserFragment } from "features/conversationMembers/MemberDescription/MemberDescription";
 import { leaveConversation } from "../leaveConversationCommand";
+import {
+  currentConversationViewDisplayed,
+  joinConversationViewDisplayed,
+  menuViewHidden
+} from "features/layout/LayoutActions";
 
 export interface ConversationFragment {
   id: string;
@@ -55,11 +59,10 @@ const MyConversations = () => {
   );
   const currentConversationId: string = useSelector(getCurrentConversationId);
   const members: UserFragment[] = useSelector(getCurrentConversationMembers);
-
   const dispatch = useDispatch();
   const openOverlay = () => {
     dispatch(fetchSpaces());
-    dispatch(setLayoutOverlay());
+    dispatch(joinConversationViewDisplayed());
   };
 
   if (conversationsById === undefined) {
@@ -71,7 +74,7 @@ const MyConversations = () => {
       <Title>
         Conversations
         <AddButton onClick={openOverlay}>
-          <Add />
+          <AddIcon title="Join conversation" />
         </AddButton>
       </Title>
       <ConversationList>
@@ -87,7 +90,8 @@ const MyConversations = () => {
             unreadMessageCount={0}
             onClick={() => {
               dispatch(focusOnConversation(conversation.id));
-              dispatch(setLayoutDefault());
+              dispatch(currentConversationViewDisplayed());
+              dispatch(menuViewHidden());
 
               if (members.length === 0) {
                 dispatch(

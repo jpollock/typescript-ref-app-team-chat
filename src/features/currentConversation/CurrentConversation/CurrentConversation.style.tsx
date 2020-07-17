@@ -1,25 +1,37 @@
 import styled from "styled-components/macro";
+import { motion } from "framer-motion";
 
-import posed from "react-pose";
-
-export const Wrapper = styled.section`
+export const Wrapper = styled(motion.section)`
   display: flex;
   flex-direction: column;
-  background-color: #f0f3f7;
+  position: fixed;
+  z-index: 0;
+  margin: ${({ theme }) => theme.space[0]};
   width: 100%;
-  @media (max-width: 480px) {
-    margin: 0;
+  height: 100%;
+  background: ${({ theme }) => theme.backgrounds.content};
+  border: ${({ theme }) =>
+    `${theme.borders.light} ${theme.colors.borderLight}`};
+  ${({ theme }) => theme.mediaQueries.medium} {
+    position: static;
   }
 `;
 
-export const AnimatedWrapper = posed(Wrapper)({
-  open: { applyAtStart: { display: "flex" } },
-  closed: { applyAtEnd: { display: "none" } }
-});
-
 export const Body = styled.div`
   display: flex;
-  height: 100%;
   flex-direction: column;
-  margin: 0px 15px 15px 15px;
+  margin: ${({ theme }) => theme.space[5]};
+  margin-top: ${({ theme }) => theme.space[0]};
+  height: 100%;
 `;
+
+export const animatedWrapperVariants = {
+  open: {
+    display: "flex"
+  },
+  closed: {
+    transitionEnd: {
+      display: "none"
+    }
+  }
+};

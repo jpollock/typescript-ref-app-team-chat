@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Wrapper,
   Body,
@@ -7,9 +7,12 @@ import {
   MessageCount,
   IconWrapper
 } from "./ConversationItem.style";
-import { Leave } from "foundations/components/icons/Leave";
+import { LeaveIcon } from "foundations/components/icons/LeaveIcon";
 import useHover from "foundations/hooks/useHover";
 import { DEFAULT_CONVERSATION } from "features/currentConversation/currentConversationModel";
+import { ThemeContext } from "styled-components";
+import getUniqueColor from "foundations/utilities/getUniqueColor";
+import { useMediaQuery } from "foundations/hooks/useMediaQuery";
 
 interface ConversationItemProps {
   selected: boolean;
@@ -20,6 +23,11 @@ interface ConversationItemProps {
   onLeave: () => void;
 }
 
+/**
+ * Show a single joined conversation
+ *
+ * Similiar to ConversationDescription but with different style and more functionality
+ */
 const ConversationItem = ({
   selected,
   id,
@@ -30,6 +38,12 @@ const ConversationItem = ({
 }: ConversationItemProps) => {
   const [isHovering, hoverProps] = useHover({ mouseEnterDelayMS: 0 });
   const canLeave: boolean = id !== DEFAULT_CONVERSATION;
+  const theme = useContext(ThemeContext);
+  const isTouch = useMediaQuery(theme.mediaQueries.touch);
+  const color = getUniqueColor(
+    name,
+    (theme.colors.avatars as unknown) as string[]
+  );
   return (
     <Wrapper
       {...hoverProps}
@@ -38,17 +52,17 @@ const ConversationItem = ({
       onClick={onClick}
     >
       <Body>
-        <ConversationIcon selected={selected}>#</ConversationIcon>
+        <ConversationIcon color={color}>#</ConversationIcon>
         <Name>{name}</Name>
       </Body>
-      {isHovering && canLeave ? (
+      {(isHovering || isTouch) && canLeave ? (
         <IconWrapper
           onClick={e => {
             e.stopPropagation();
             onLeave();
           }}
         >
-          <Leave fill={selected ? "white" : "#979797"} />
+          <LeaveIcon title="Leave Conversation" selected={selected} />
         </IconWrapper>
       ) : (
         unreadMessageCount > 0 && (

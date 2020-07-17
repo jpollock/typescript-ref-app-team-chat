@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -10,6 +10,7 @@
 
 # production
 /build
+/functions/build
 
 # misc
 .DS_Store
@@ -25,3 +26,15 @@ yarn.lock
 
 # Ensure our pubnub keys do not get checked in to github
 pubnub-keys.json
+
+# Functions upload cache
+.cache
+
+# IDE
+.idea
+
+deployment_keys
+deployment_keys.pub
+
+# Environment variables
+.env

@@ -1,15 +1,30 @@
+import { focusOnConversationAction } from "features/currentConversation/currentConversationModel";
 import {
-  focusOnConversationAction,
-  updateConversationMessageInputValueAction
-} from "features/currentConversation/currentConversationModel";
-import {
-  setLayoutAction,
-  setBreakpointAction
-} from "features/layout/layoutModel";
+  MessageDraftUpdatedAction,
+  MessageDraftDiscardedAction
+} from "features/joinedConversations/DraftsModel";
 import {
   logingInAction,
   loginSucceededAction
 } from "features/authentication/authenticationModel";
+import {
+  menuViewDisplayedAction,
+  currentConversationViewDisplayedAction,
+  conversationMembersViewDisplayedAction,
+  joinConversationViewDisplayedAction,
+  menuViewHiddenAction,
+  currentConversationViewHiddenAction,
+  conversationMembersViewHiddenAction,
+  joinConversationViewHiddenAction
+} from "features/layout/LayoutActions";
+import { SignalReceivedAction } from "pubnub-redux/dist/features/signal/SignalActions";
+import {
+  TypingIndicatorEnvelope,
+  RemoveTypingIndicatorAction,
+  RemoveTypingIndicatorAllAction
+} from "features/typingIndicator/typingIndicatorModel";
+import { MessageReceivedAction } from "pubnub-redux/dist/features/message/MessageActions";
+import { MessageEnvelope } from "features/messages/messageModel";
 
 /**
  * AppActions is the union of all basic actions in this application.
@@ -23,8 +38,19 @@ import {
  */
 export type AppActions =
   | focusOnConversationAction
-  | setLayoutAction
-  | setBreakpointAction
   | logingInAction
   | loginSucceededAction
-  | updateConversationMessageInputValueAction;
+  | MessageDraftUpdatedAction
+  | MessageDraftDiscardedAction
+  | menuViewDisplayedAction
+  | currentConversationViewDisplayedAction
+  | conversationMembersViewDisplayedAction
+  | joinConversationViewDisplayedAction
+  | menuViewHiddenAction
+  | currentConversationViewHiddenAction
+  | conversationMembersViewHiddenAction
+  | joinConversationViewHiddenAction
+  | SignalReceivedAction<TypingIndicatorEnvelope>
+  | MessageReceivedAction<MessageEnvelope>
+  | RemoveTypingIndicatorAction
+  | RemoveTypingIndicatorAllAction;

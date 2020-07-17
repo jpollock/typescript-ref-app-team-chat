@@ -27,7 +27,6 @@ try {
     const rawdata = fs.readFileSync(CONFIG_FILE);
     keys = JSON.parse(rawdata);
     if(keys && keys.publishKey.length && keys.subscribeKey.length) {
-        console.log(`Keys detected in ${CONFIG_FILE}.`);
         if (process.argv[2] === '--quick-test') {
             process.exit(0);
         }

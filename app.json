@@ -13,5 +13,8 @@
       "description": "PubNub Subscribe Key",
       "value": ""
     }
-  }  
+  },
+  "scripts": {
+    "postDeploy": "node setup/populate.js"
+  }
 }

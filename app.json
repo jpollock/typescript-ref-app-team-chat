@@ -16,5 +16,10 @@
   },
   "scripts": {
     "postDeploy": "node setup/populate.js"
-  }
+  },
+  "buildpacks": [
+    {
+      "url": "mars/create-react-app"
+    }
+  ]  
 }

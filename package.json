@@ -35,8 +35,8 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "node setup/populate.js --quick-test && react-scripts build",
-    "build": "node setup/populate.js --quick-test && react-scripts build",
+    "start": "node setup/populate.js --quick-test && node --max_old_space_size=2560 node_modules/.bin/react-scripts start",
+    "build": "node setup/populate.js --quick-test && node --max_old_space_size=2560 node_modules/.bin/react-scripts start",
     "test": "node setup/populate.js --quick-test && react-scripts test",
     "setup": "node setup/populate.js",
     "lint:functions": "eslint functions/src/**/*.ts -c functions/.eslintrc",
